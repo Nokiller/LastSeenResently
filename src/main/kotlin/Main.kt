@@ -1,16 +1,12 @@
-val currentTimeOfAbsence = 3601
-val secInHour = 60 * 60
-val secInDay = secInHour * 24
-
-
 fun main() {
-    println("был(а) ${agoToText()}")
+    println("был(а) ${agoToText(3601)}")
 }
 
+fun agoToTextException(currentTimeOfAbsence: Int): String {
+    val secInHour = 60 * 60
+    val secInDay = secInHour * 24
 
-fun agoToText(): String {
-    val statementText = when (currentTimeOfAbsence) {
-        in 0..60 -> "только что"
+    return when (currentTimeOfAbsence) {
         in 61..secInHour -> {
             val timeInMinutes = currentTimeOfAbsence / 60
             if (timeInMinutes % 10 == 1) {
@@ -31,10 +27,23 @@ fun agoToText(): String {
                 "в сети $timeInHours часов назад"
         }
 
+        else -> {
+            "Ошибка"
+        }
+    }
+}
+
+fun agoToText(currentTimeOfAbsence: Int): String {
+    val secInHour = 60 * 60
+    val secInDay = secInHour * 24
+
+    return when (currentTimeOfAbsence) {
+        in 0..60 -> "только что"
+        in 61..secInHour, in secInHour + 1..secInDay -> agoToTextException(currentTimeOfAbsence)
         in secInDay + 1..secInDay * 2 -> "вчера"
         in secInDay * 2 + 1..secInDay * 3 -> "позавчера"
         else -> "давно"
     }
-    return statementText
+
 }
 
